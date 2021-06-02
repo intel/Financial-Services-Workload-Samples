@@ -3,17 +3,17 @@ Financial Services Workload Samples:
 
 Most FSI applications are deployed in a multi-process (one process per core) environment. So, all the workloads in this sample will execute in Multi-processes/Instances mode. Each process will execute a single thread and inter-process communication and resources sharing between the threads won't exist while working on separate instruments (i.e. Options). In the package the compilation will build AVX512 binaries from source code. The Intel C++ Compiler is needed to compile the sources.
 
-Black Scholes Option Pricing:
+Black Scholes Options Pricing:
 ============================= 
 
-Black Scholes is a popular mathematical model used in finance for European option valuation. This is a double precision version. This benchmark prices call and put options using the Black Scholes formula. A large set of options are fed via an input array and results are written into call and put arrays. An exp function is used for simulating the Cumulative Normal Distribution (CND). This is a compute-bound, double precision workload and benefits from Turbo. It runs on Physical cores (HT can be turned off).
+Black Scholes is a popular mathematical model used in finance for European options valuation. This is a double precision version. This benchmark prices call and put options using the Black Scholes formula. A large set of options are fed via an input array and results are written into call and put arrays. An exp function is used for simulating the Cumulative Normal Distribution (CND). This is a compute-bound, double precision workload and benefits from Turbo. It runs on Physical cores (HT can be turned off).
 
-Binomial Option Pricing:
+Binomial Options Pricing:
 ========================
 
 Binomial Options Pricing is a lattice-based approach (Cox, Ross and Rubenstein method) that uses a discrete-time model of the varying price over time of the underlying financial instrument (a European call option). At every time step, the value of stock “S” can either go up by uS or go down by “vS” (0<v<1<u). The values of “u” and “v” are constant for every time step. This is a compute-bound, double precision workload and benefits from Turbo and SMT. Run it in HT ON mode (runs on both Physical and Logical (HT) cores).
 
-Monte Carlo Option Pricing:
+Monte Carlo Options Pricing:
 ===========================
 
 Monte Carlo European options is a numerical method that uses statistical sampling techniques to approximate solutions to quantitative problems. In Computational Finance, Monte Carlo algorithms are used to calculate the value of an option with multiple sources of uncertainties and random features, such as changing interest rates, stock prices or exchange rates, etc. to evaluate complex instruments, portfolios, and investments. This is a compute-bound, double precision workload and benefits from Turbo and SMT. Run it in HT ON mode (runs on both Physical and Logical (HT) cores).
