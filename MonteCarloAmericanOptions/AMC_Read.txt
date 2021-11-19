@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------------------------------------------
+MonteCarloAmericanOptions(Longstaff-Schwartz microbenchmark)
+
+This code was developed to demonstrate CPU thread optimization techniques that are effective for parallelization of the Longstaff-Schwartz algorithm. The code makes use of OpenMP for parallel constructs, and the MKL Vector Statistics library for generation of random input data. A “vanilla” random number generator is also included but has not been tested by the FPGA Acceleration Libraries team. 
+
+The Longstaff-Schwartz algorithm is contained within the body of the main program, following the generation of dummy path data by perform_sims(). 
+The implementation makes use of an OpenMP parallel reduction for each timestep. The set of paths is decomposed into “strips” the size of which suits the CPU vector architecture. Each thread uses its thread ID to work out the subset of the strips that it is responsible for evaluating, via the helper function GetStripInterval(). 
+
+Data type and problem size are set in the utilities.h file. 
+
+Parameter	Notes
+REAL_BYTES	Sets floating point format. Testing has been with REAL_BYTES == 8
+NBUF		Parallel grain size used in random number and path generation. Does not affect Longstaff-Schwartz. 
+VECLEN		Sets SIMD width, determining the granularity of the path strips used in the Longstaff-Schwartz code. 
+numPaths	Number of paths to be generated – must be a multiple of NBUF and also a multiple of VECLEN
+numSteps	Number of timesteps in the simulation
+
+The option pricing parameters are hard-coded in the main program as spot, strike, vol, and maturity. 
+
+To build the program you will need the MKL headers and libraries for Linux. You main need to add these to your CPATH, LIBRARY_PATH, and LD_LIBRARY_PATH environment variables. For example if $MKLROOT is the location of your MKL installation:
+export CPATH=$MKLROOT/include
+export LIBRARY_PATH=$MKLROOT/lib/intel64 
+export LD_LIBRARY_PATH=$LD_IBRARY_PATH:$MKLROOT/lib/intel64 
+
+The compile.sh script contains four command lines  - pick the one that best suits your system:
+•	Intel C++ compiler – AVX2 vectorization for Intel CPUs
+•	Intel C++ compiler – AVX512 vectorization
+•	Intel C++ compiler – AVX2 vectorization for Intel and AMD CPUs
+•	gcc – AVX2 vectorization for Intel and AMD CPUs
+
+We have built and tested the program using g++ 6.3.0 and Intel Parallel Studio XE 2018.2.
+The MPTest folder contains scripts that can be used to study scalability of the code on a multi-core CPU by limiting the number of cores that the process can use. 
+--------------------------------------------------------------------------------------------------------------------
